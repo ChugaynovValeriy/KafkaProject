@@ -5,21 +5,21 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import study.service.SendService;
 
 @RestController
 @RequestMapping("message")
 public class MessageController {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final SendService sendService;
 
     @Autowired
-    public MessageController(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
+    public MessageController(SendService sendService) {
+        this.sendService = sendService;
     }
-
 
     @PostMapping
     public void sendOrder(String messageId, String message) {
-        kafkaTemplate.send("messageTopic", messageId, message);
+        sendService.sendMessage("MESSAGE ID=" + messageId + " MESSAGE=" + message);
     }
 }
